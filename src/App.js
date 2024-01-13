@@ -1,83 +1,55 @@
-// TodoApp.js
 import React, { useState } from 'react';
 
+const containerStyle = {
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  height: '100vh',
+  background: '#f0f0f0',
+  fontFamily: 'Arial, sans-serif',
+};
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  background: linear-gradient(to bottom, skyblue, #ffff);
-`;
+const listStyle = {
+  listStyle: 'none',
+  padding: 0,
+  width: '80%',
+};
 
-const TodoList = styled.ul`
-  list-style: none;
-  padding: 0;
-  width: 80%;
-`;
+const itemStyle = {
+  backgroundColor: '#fff',
+  margin: '10px 0',
+  padding: '10px',
+  borderRadius: '5px',
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  cursor: 'pointer',
+};
 
-const TodoItem = styled(motion.li)`
-  background-color: #fff;
-  margin: 10px 0;
-  padding: 10px;
-  border-radius: 5px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
+const completedStyle = {
+  textDecoration: 'line-through',
+  opacity: '0.7',
+};
 
-  &:hover {
-    background-color: #f0f0f0;
-  }
+const inputStyle = {
+  padding: '10px',
+  border: '1px solid #ccc',
+  borderRadius: '5px',
+  width: '70%',
+  fontSize: '16px',
+  marginRight: '10px',
+};
 
-  &.completed {
-    text-decoration: line-through;
-    opacity: 0.7;
-  }
-`;
-
-const InputContainer = styled.div`
-  display: flex;
-  margin-top: 10px;
-`;
-
-const TodoInput = styled.input`
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px 0 0 5px;
-  width: 70%;
-  font-size: 16px;
-  outline: none;
-`;
-
-const AddButton = styled(motion.button)`
-  background-color: #5cb85c;
-  color: #fff;
-  padding: 10px;
-  border: none;
-  border-radius: 0 5px 5px 0;
-  cursor: pointer;
-  font-size: 16px;
-
-  &:hover {
-    background-color: #4cae4c;
-  }
-`;
-
-const DeleteButton = styled(motion.button)`
-  background-color: #d9534f;
-  color: #fff;
-  padding: 5px;
-  border: none;
-  border-radius: 3px;
-  cursor: pointer;
-  margin-left: 5px;
-
-  &:hover {
-    background-color: #c9302c;
-  }
-`;
+const buttonStyle = {
+  backgroundColor: '#5cb85c',
+  color: '#fff',
+  padding: '10px',
+  border: 'none',
+  borderRadius: '5px',
+  cursor: 'pointer',
+  fontSize: '16px',
+};
 
 const TodoApp = () => {
   const [todos, setTodos] = useState([]);
@@ -103,34 +75,31 @@ const TodoApp = () => {
   };
 
   return (
-    <Container>
-      <TodoList>
+    <div style={containerStyle}>
+      <ul style={listStyle}>
         {todos.map((todo, index) => (
-          <TodoItem
+          <li
             key={index}
-            whileHover={{ scale: 1.1 }}
-            className={todo.completed ? 'completed' : ''}
-            onClick={() => toggleCompletion(index)}
+            style={{ ...itemStyle, ...(todo.completed ? completedStyle : {}) }}
           >
-            {todo.text}
-            <DeleteButton whileHover={{ scale: 1.1 }} onClick={() => deleteTodo(index)}>
-              X
-            </DeleteButton>
-          </TodoItem>
+            <span onClick={() => toggleCompletion(index)}>{todo.text}</span>
+            <button onClick={() => deleteTodo(index)}>Delete</button>
+          </li>
         ))}
-      </TodoList>
-      <InputContainer>
-        <TodoInput
+      </ul>
+      <div>
+        <input
           type="text"
           placeholder="Add a new todo"
           value={newTodo}
           onChange={(e) => setNewTodo(e.target.value)}
+          style={inputStyle}
         />
-        <AddButton whileHover={{ scale: 1.1 }} onClick={addTodo}>
+        <button onClick={addTodo} style={buttonStyle}>
           Add Todo
-        </AddButton>
-      </InputContainer>
-    </Container>
+        </button>
+      </div>
+    </div>
   );
 };
 
